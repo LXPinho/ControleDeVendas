@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ControleDeVendasWebApplication.Models.PedidoItens>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Novo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoPai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PedidoPai.ClientePedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                     @Html.DisplayFor(modelItem => item.PedidoPai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PedidoPai.ClientePedido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProdutoItem)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Detalhes", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Deletar", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<p>
+    <a asp-action="Create">Novo</a>
+    <li>
+        <a asp-controller="Pedido" asp-action="Index">Voltar</a>
+    </li>   
+</p>
