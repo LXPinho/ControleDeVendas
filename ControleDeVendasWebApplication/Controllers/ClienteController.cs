@@ -1,4 +1,5 @@
 ﻿using ControleDeVendasWebApplication.Models;
+using ControleDeVendasWebApplication.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,8 @@
 ﻿using ControleDeVendasWebApplication.Models;
+using ControleDeVendasWebApplication.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using static ControleDeVendasWebApplication.ExecPedido;
 
 namespace ControleDeVendasWebApplication.Controllers
 {

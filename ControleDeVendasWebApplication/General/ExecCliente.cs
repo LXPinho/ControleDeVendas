@@ -3,11 +3,10 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace ControleDeVendasWebApplication
+namespace ControleDeVendasWebApplication.Tools
 {
     internal class ExecCliente
     {
-        static public HttpClient client = new HttpClient();
         public enum enum_opcao { enumCreate, enumGet, enumUpdate, enumDelete }
         public int Id { get; internal set; }
         public class ListaClientes
@@ -46,7 +45,7 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<Uri> CreateClienteAsync(Cliente cliente)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PostAsJsonAsync(
                 $"api/Cliente/Post{cliente}", cliente);
             response.EnsureSuccessStatusCode();
 
@@ -56,7 +55,7 @@ namespace ControleDeVendasWebApplication
         static async Task<ListaClientes> GetClienteAsync(string path)
         {
             ListaClientes clientes;
-            using (HttpResponseMessage response = await client.GetAsync(path + $"api/Cliente/"))
+            using (HttpResponseMessage response = await Tools.getInstanceHttpClient().GetAsync(path + $"api/Cliente/"))
             {
                 clientes = response.IsSuccessStatusCode
                     ? JsonSerializer.Deserialize<ListaClientes>(await response.Content.ReadAsAsync<string>()) ?? new ListaClientes()
@@ -66,7 +65,7 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<Cliente> UpdateClienteAsync(Cliente cliente)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PutAsJsonAsync(
                 $"api/Cliente/Put{cliente.Id},{cliente}", cliente);
             response.EnsureSuccessStatusCode();
 
@@ -76,25 +75,13 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<HttpStatusCode> DeleteClienteAsync(string id)
         {
-            HttpResponseMessage response = await client.DeleteAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().DeleteAsync(
                 $"api/Cliente/{id}");
             return response.StatusCode;
         }
 
         public static async Task RunAsync(enum_opcao opcao = enum_opcao.enumGet)
         {
-            try
-            {
-                // Update port # in the following line.
-                client.BaseAddress = new Uri("http://localhost:5206");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            }
-            catch
-            {
-            }
-
             ListaClientesItens = new ListaClientes();
             try
             {
@@ -108,7 +95,11 @@ namespace ControleDeVendasWebApplication
                     case enum_opcao.enumGet:
 
                         // Get 
-                        ListaClientesItens = await GetClienteAsync(client.BaseAddress.ToString());
+                        Uri? baseAddress = Tools.getInstanceHttpClient().BaseAddress;
+                        if (baseAddress != null)
+                        {
+                            ListaClientesItens = await GetClienteAsync(baseAddress.ToString());
+                        }
                         break;
 
                     case enum_opcao.enumUpdate:

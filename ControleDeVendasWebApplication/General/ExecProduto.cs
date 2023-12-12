@@ -1,22 +1,20 @@
 ﻿using ControleDeVendasWebApplication.Models;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace ControleDeVendasWebApplication
+namespace ControleDeVendasWebApplication.Tools
 {
     public class ExecProduto
     {
-        static public HttpClient client = new HttpClient();
         public enum enum_opcao { enumCreate, enumGet, enumUpdate, enumDelete }
         public class ListaProdutos
         {
             public List<Produto> Produtos { get; set; } = new List<Produto>();
         }
-        static public ListaProdutos ListaProdutosItens { get; set; } = new ListaProdutos();   
+        static public ListaProdutos ListaProdutosItens { get; set; } = new ListaProdutos();
         static public void LimpaListaProduto()
         {
-            if(ListaProdutosItens != null && ListaProdutosItens.Produtos.Count() > 0)
+            if (ListaProdutosItens != null && ListaProdutosItens.Produtos.Count() > 0)
             {
                 ListaProdutosItens.Produtos.Clear();
             }
@@ -43,7 +41,7 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<Uri> CreateProdutoAsync(Produto produto)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PostAsJsonAsync(
                 $"api/Produto/Post{produto}", produto);
             response.EnsureSuccessStatusCode();
 
@@ -53,17 +51,17 @@ namespace ControleDeVendasWebApplication
         static async Task<ListaProdutos> GetProdutoAsync(string path)
         {
             ListaProdutos produtos;
-            using (HttpResponseMessage response = await client.GetAsync(path + $"api/Produto/"))
+            using (HttpResponseMessage response = await Tools.getInstanceHttpClient().GetAsync(path + $"api/Produto/"))
             {
                 produtos = response.IsSuccessStatusCode
-                    ? JsonSerializer.Deserialize<ListaProdutos>(await response.Content.ReadAsAsync<String>()) ?? new ListaProdutos()
+                    ? JsonSerializer.Deserialize<ListaProdutos>(await response.Content.ReadAsAsync<string>()) ?? new ListaProdutos()
                     : new ListaProdutos();
             }
             return produtos;
         }
         static async Task<Produto> UpdateProdutoAsync(Produto produto)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PutAsJsonAsync(
                 $"api/Produto/Put{produto.Id},{produto}", produto);
             response.EnsureSuccessStatusCode();
 
@@ -74,25 +72,12 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<HttpStatusCode> DeleteProdutoAsync(string id)
         {
-            HttpResponseMessage response = await client.DeleteAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().DeleteAsync(
                 $"api/Produto/{id}");
             return response.StatusCode;
         }
-
         public static async Task RunAsync(enum_opcao opcao = enum_opcao.enumGet)
         {
-            try
-            {
-                // Update port # in the following line.
-                client.BaseAddress = new Uri("http://localhost:5206");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            }
-            catch
-            {
-            }
-
             ListaProdutosItens = new ListaProdutos();
             try
             {
@@ -106,7 +91,11 @@ namespace ControleDeVendasWebApplication
                     case enum_opcao.enumGet:
 
                         // Get 
-                        ListaProdutosItens = await GetProdutoAsync(client.BaseAddress.ToString());
+                        Uri? baseAddress = Tools.getInstanceHttpClient().BaseAddress;
+                        if (baseAddress != null)
+                        {
+                            ListaProdutosItens = await GetProdutoAsync(baseAddress.ToString());
+                        }
                         break;
 
                     case enum_opcao.enumUpdate:
@@ -126,5 +115,6 @@ namespace ControleDeVendasWebApplication
                 Console.WriteLine(e.Message);
             }
         }
+
     }
 }

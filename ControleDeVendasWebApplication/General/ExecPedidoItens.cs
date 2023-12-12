@@ -1,13 +1,11 @@
 ﻿using ControleDeVendasWebApplication.Models;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace ControleDeVendasWebApplication
+namespace ControleDeVendasWebApplication.Tools
 {
     internal class ExecPedidoItens
     {
-        static public HttpClient client = new HttpClient();
         public enum enum_opcao { enumCreate, enumGet, enumUpdate, enumDelete }
         public class ListaPedidosItens
         {
@@ -16,7 +14,7 @@ namespace ControleDeVendasWebApplication
         static public ListaPedidosItens ListaPedidosItensItem { get; set; } = new ListaPedidosItens();
         static public void LimpaListaPedidosItensItem()
         {
-            if (ListaPedidosItensItem != null &&  ListaPedidosItensItem.PedidosItens.Count() > 0)
+            if (ListaPedidosItensItem != null && ListaPedidosItensItem.PedidosItens.Count() > 0)
             {
                 ListaPedidosItensItem.PedidosItens.Clear();
             }
@@ -44,7 +42,7 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<Uri> CreatePedidoItensAsync(PedidoItens pedidoItens)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PostAsJsonAsync(
                 $"api/PedidoItens/Post{pedidoItens}", pedidoItens);
             response.EnsureSuccessStatusCode();
 
@@ -54,7 +52,7 @@ namespace ControleDeVendasWebApplication
         static async Task<ListaPedidosItens> GetPedidoItensAsync(string path)
         {
             ListaPedidosItens pedidos;
-            using (HttpResponseMessage response = await client.GetAsync(path + $"api/PedidoItens/"))
+            using (HttpResponseMessage response = await Tools.getInstanceHttpClient().GetAsync(path + $"api/PedidoItens/"))
             {
                 pedidos = response.IsSuccessStatusCode
                     ? JsonSerializer.Deserialize<ListaPedidosItens>(await response.Content.ReadAsAsync<string>()) ?? new ListaPedidosItens()
@@ -64,7 +62,7 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<PedidoItens> UpdatePedidoItensAsync(PedidoItens pedidoItens)
         {
-            HttpResponseMessage response = await client.PutAsJsonAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().PutAsJsonAsync(
                 $"api/PedidoItens/Put{pedidoItens.Id},{pedidoItens}", pedidoItens);
             response.EnsureSuccessStatusCode();
 
@@ -74,26 +72,13 @@ namespace ControleDeVendasWebApplication
         }
         static async Task<HttpStatusCode> DeletePedidoItensAsync(string id)
         {
-            HttpResponseMessage response = await client.DeleteAsync(
+            HttpResponseMessage response = await Tools.getInstanceHttpClient().DeleteAsync(
                 $"api/PedidoItens/{id}");
             return response.StatusCode;
         }
 
         public static async Task RunAsync(enum_opcao opcao = enum_opcao.enumGet)
         {
-            try
-            {
-                // Update port # in the following line.
-                client.BaseAddress = new Uri("http://localhost:5206");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            }
-            catch
-            {
-            }
-
-            ListaPedidosItensItem = new ListaPedidosItens();
             try
             {
                 switch (opcao)
@@ -104,9 +89,13 @@ namespace ControleDeVendasWebApplication
                         break;
 
                     case enum_opcao.enumGet:
-                          
+
                         // Get 
-                        ListaPedidosItensItem = await GetPedidoItensAsync(client.BaseAddress.ToString());
+                        Uri? baseAddress = Tools.getInstanceHttpClient().BaseAddress;
+                        if (baseAddress != null)
+                        {
+                            ListaPedidosItensItem = await GetPedidoItensAsync(baseAddress.ToString());
+                        }
                         break;
 
                     case enum_opcao.enumUpdate:

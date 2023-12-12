@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 
 namespace ConsoleAppControleDeVendas
 {
@@ -9,6 +10,15 @@ namespace ConsoleAppControleDeVendas
 
         static void Main(string[] args)
         {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .Build();
+
+            var a = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+
+            var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(";");
+
             // Update port # in the following line.
             client.BaseAddress = new Uri("http://localhost:5206");
             client.DefaultRequestHeaders.Accept.Clear();
