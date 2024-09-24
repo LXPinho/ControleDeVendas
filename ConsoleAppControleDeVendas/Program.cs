@@ -17,7 +17,7 @@ namespace ConsoleAppControleDeVendas
 
             var a = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
 
-            var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(";");
+            //var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(";");
 
             // Update port # in the following line.
             client.BaseAddress = new Uri("http://localhost:5206");
