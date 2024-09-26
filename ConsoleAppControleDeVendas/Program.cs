@@ -10,17 +10,20 @@ namespace ConsoleAppControleDeVendas
 
         static void Main(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 
-            var a = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+            IConfigurationSection ApiServerConnection = configuration.GetSection("ApiServerConnection");
 
-            //var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(";");
+            /* 
+             * Default -> uri = "http://localhost:5206" 
+             */
+            string uri = $"{ApiServerConnection.GetValue<string>("Uri") ?? "http://localhost:5206"}";
 
             // Update port # in the following line.
-            client.BaseAddress = new Uri("http://localhost:5206");
+            client.BaseAddress = new Uri(uri);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
