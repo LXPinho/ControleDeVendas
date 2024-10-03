@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeVendas.Api", "ControleDeVendas.Api\ControleDeVendas.Api.csproj", "{5E045345-0479-4719-AA2F-9A5F24D4D546}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppControleDeVendas", "ConsoleAppControleDeVendas\ConsoleAppControleDeVendas.csproj", "{D9861E4D-9795-4536-8465-513B2460F60E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeVendasWebApplication", "ControleDeVendasWebApplication\ControleDeVendasWebApplication.csproj", "{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeVendasWebApplication", "ControleDeVendasWebApplication\ControleDeVendasWebApplication.csproj", "{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppControleDeVendas", "ConsoleAppControleDeVendas\ConsoleAppControleDeVendas.csproj", "{B396CC28-B5AF-46F3-B386-17E0C1F1CCD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{5E045345-0479-4719-AA2F-9A5F24D4D546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E045345-0479-4719-AA2F-9A5F24D4D546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E045345-0479-4719-AA2F-9A5F24D4D546}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9861E4D-9795-4536-8465-513B2460F60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9861E4D-9795-4536-8465-513B2460F60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9861E4D-9795-4536-8465-513B2460F60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9861E4D-9795-4536-8465-513B2460F60E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3390B27E-F3D8-48DB-B8FB-47A493E9E7C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B396CC28-B5AF-46F3-B386-17E0C1F1CCD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B396CC28-B5AF-46F3-B386-17E0C1F1CCD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B396CC28-B5AF-46F3-B386-17E0C1F1CCD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B396CC28-B5AF-46F3-B386-17E0C1F1CCD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
